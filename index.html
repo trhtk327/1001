@@ -1,0 +1,485 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> חידון הארי פוטר והאסיר מאזקבאן</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+font-family:Arial;
+height:100vh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+background:url("https://i.postimg.cc/0jmNNCxv/swhrsn.jpg") center/cover no-repeat fixed;
+color:white;
+}
+
+.container{
+width:95%;
+max-width:900px;
+background:rgba(0,0,0,0.65);
+backdrop-filter:blur(10px);
+padding:35px;
+border-radius:18px;
+text-align:center;
+box-shadow:0 0 40px rgba(0,0,0,0.9);
+}
+
+#end {
+    text-align: center;
+    padding: 40px 25px;
+    max-width: 420px;
+    margin: 40px auto;
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    font-family: Arial, sans-serif;
+}
+
+/* ציון */
+#score {
+    font-size: 60px;
+    font-weight: bold;
+    margin: 20px 0;
+    background: linear-gradient(45deg, #00ffcc, #00c6ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(0,255,200,0.3);
+}
+
+/* הודעה */
+#msg {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+/* פירוט */
+#detail {
+    font-size: 16px;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.05);
+    padding: 12px;
+    border-radius: 10px;
+}
+
+/* זמן */
+#time {
+    font-size: 18px;
+    margin-bottom: 20px;
+    opacity: 0.9;
+}
+
+/* כפתורים */
+.small-btn {
+    margin: 10px 5px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.small-btn:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+/* תיבת שם */
+#username {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    margin: 15px 0;
+    width: 85%;
+    text-align: center;
+    font-size: 16px;
+    outline: none;
+}
+
+.start-btn{
+font-size:32px;
+padding:18px 70px;
+background:#00ffcc;
+color:black;
+border:none;
+border-radius:14px;
+cursor:pointer;
+font-weight:bold;
+}
+
+/* בסיס לכפתורי סיום */
+.action-btn {
+    margin: 10px 8px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    color: white;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+/* כפתור שתף */
+.share-btn {
+    background: linear-gradient(45deg, #25D366, #128C7E);
+}
+
+.share-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+}
+
+/* כפתור שחק שוב */
+.replay-btn {
+    background: linear-gradient(45deg, #ff7b00, #ff3d00);
+}
+
+.replay-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+}
+
+.answer{
+background:rgba(255,255,255,0.1);
+padding:14px;
+margin:10px 0;
+border-radius:10px;
+cursor:pointer;
+transition:0.25s;
+text-align:right;
+position:relative;
+}
+.answer:hover{background:rgba(255,255,255,0.25)}
+
+.correct{background:#00ff88!important;color:black}
+.wrong{background:#ff5252!important}
+
+.mark{
+position:absolute;
+left:15px;
+top:50%;
+transform:translateY(-50%);
+}
+
+.progress{height:10px;background:rgba(255,255,255,0.2);border-radius:10px;margin-bottom:20px;}
+.bar{height:100%;background:#00c6ff;border-radius:10px;}
+
+.hidden{display:none}
+
+.credit{
+position:fixed;
+bottom:10px;
+width:100%;
+text-align:center;
+font-weight:bold;
+}
+
+#timerBig{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:80px;
+z-index:999;
+}
+
+#timerSmall{
+display:none;
+position:fixed;
+top:10px;
+left:50%;
+transform:translateX(-50%);
+background:rgba(0,0,0,0.6);
+padding:8px 18px;
+border-radius:10px;
+}
+
+.history{margin-top:20px;background:#111;padding:10px;border-radius:10px;}
+.row{display:flex;justify-content:space-between;padding:6px;border-bottom:1px solid #333;}
+.row.header{font-weight:bold;border-bottom:2px solid #555;}
+</style>
+</head>
+
+<body>
+
+<div id="timerBig">00:00</div>
+<div id="timerSmall">00:00</div>
+
+<div class="container" id="box">
+
+<div id="start">
+<h1> חידון הארי פוטר והאסיר מאזקבאן </h1><br>
+<button class="start-btn" onclick="startQuiz()">התחל חידון</button><br><br>
+<button class="small-btn" onclick="toggleTransparent()">רקע שקוף</button>
+</div>
+
+<div id="quiz" class="hidden">
+<div class="progress"><div id="bar" class="bar"></div></div>
+<div id="qnum"></div>
+<h2 id="q"></h2>
+<div id="answers"></div>
+<button class="small-btn" onclick="skip()">דלג</button>
+</div>
+
+<div id="end" class="hidden">
+<h1>סיום החידון</h1>
+<div id="score"></div>
+<div id="msg"></div>
+<div id="detail"></div>
+<div id="time"></div>
+
+<input id="username" placeholder="הכנס שם"><br>
+<button class="action-btn share-btn" onclick="shareScore()">שתף עם חברים</button>
+<button class="action-btn replay-btn" onclick="location.reload()">שחק שוב</button>
+<div id="historyBox" class="history"></div>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="https://files.catbox.moe/nrz4fy.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="correctSound">
+  <source src="https://cdn.freesound.org/previews/109/109662_945474-lq.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="wrongSound">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_1b4c4f2b7f.mp3" type="audio/mpeg">
+</audio>
+
+</div>
+
+<div class="credit">נוצר על ידי אריאל מאירי</div>
+
+<script>
+
+let transparent=false;
+function toggleTransparent(){
+let box=document.getElementById("box");
+if(!transparent){
+box.style.background="transparent";
+}else{
+box.style.background="rgba(0,0,0,0.65)";
+}
+transparent=!transparent;
+}
+
+let i=0,score=0,wrong=0,skipped=0;
+let startTime,timerInterval;
+
+function startQuiz(){
+
+let music = document.getElementById("bgMusic");
+music.volume = 0.3;
+music.play();
+
+document.getElementById("start").classList.add("hidden");
+document.getElementById("quiz").classList.remove("hidden");
+
+startTime=Date.now();
+timerInterval=setInterval(updateTimer,1000);
+
+document.getElementById("timerSmall").style.display="block";
+
+showQ();
+}
+
+function canSendToday(){
+let today = new Date().toLocaleDateString();
+let lastSend = localStorage.getItem("lastSendDate");
+
+if(lastSend === today){
+return false;
+}
+
+localStorage.setItem("lastSendDate", today);
+return true;
+}
+
+function updateTimer(){
+let diff=Math.floor((Date.now()-startTime)/1000);
+let m=Math.floor(diff/60);
+let s=diff%60;
+let t=`${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+document.getElementById("timerSmall").innerText=t;
+}
+
+const questions = [
+
+{q:"כאשר לופין מגיע לצריף המצווח, מהו ההסבר המדויק ביותר לכך שלא שתה את שיקוי הזאב באותו ערב?",a:["לופין יצא מיד בעקבות גילוי פיטר במפה ולא חזר לקחת את השיקוי","סנייפ לא הצליח להכין את השיקוי בזמן","סנייפ מחבל בשיקוי כדי להסגיר אותו","לופין לא ראה צורך לקחת אותו באותו לילה"],c:0},
+
+{q:"איזה פרט במפת הקונדסאים גרם ללופין להבין שסיריוס אינו פועל לבדו?",a:["היעלמות שמו של סיריוס מהמפה","הופעת שמו של פיטר פטיגרו לצד רון","תנועה חריגה של רון בלבד","הופעת שמו של הארי במקום בלתי צפוי"],c:1},
+
+{q:"במהלך העימות בצריף, מהו הגורם הישיר שמונע מסיריוס ולופין להרוג את פיטר במקום?",a:["כניסתו של סנייפ לחדר","דרישתו של הארי שלא יהרגו אותו","פחד להפוך לרוצחים","חשש מהעדר הוכחות"],c:1},
+
+{q:"איזו התנהגות של קרוקשנקס במהלך השנה מקבלת הסבר חדש בפרק 17?",a:["היעלמותו לפרקי זמן ארוכים","פחד מכלבים","ניסיון עקבי לתקוף את סקאברס","תוקפנות אקראית כלפי רון"],c:2},
+
+{q:"לפי דבריו של סיריוס, מה הייתה הסיבה שפיטר בחר להסתתר כחיית מחמד?",a:["כדי לקבל עדכונים על משרד הקסמים","כדי לרגל אחרי הארי","כדי לחיות ליד קוסמים בלי לעורר חשד","כדי לנקום במשפחת בלק"],c:2},
+
+{q:"איזה דפוס חשיבה מנחה את סנייפ כשהוא מאשים את הארי?",a:["השוואה מתמדת בין הארי לאביו","שנאה אישית","פחד מסיריוס","הסתמכות על ראיות"],c:0},
+
+{q:"מהו הרצף שאפשר לפיטר לברוח?",a:["לופין הופך לאיש זאב → כאוס → פיטר בורח כעכבר","הופעת סוהרסנים → בלבול → בריחה","התעלפות סנייפ → חושך → בריחה","כישוף של הארי → פיצוץ → בריחה"],c:0},
+
+{q:"מדוע הסוהרסנים מתקרבים לאגם?",a:["קיבלו הוראה","נמשכים לסיריוס ולמצב רגשי קיצוני","מחפשים את פיטר","כישוף חזק"],c:1},
+
+{q:"איזה זיכרון הארי משתמש בו בתחילת לימוד הפטרונוס?",a:["קבלת המכתב מהוגוורטס","פגישה עם רון והרמיוני","הוריו","ניצחון בקווידיץ׳"],c:0},
+
+{q:"מה ההסבר לכך שהפטרונוס מופיע באגם?",a:["סיריוס מטיל כישוף","הארי התחזק","לופין הגיע","הארי מהעתיד הטיל אותו"],c:3},
+
+{q:"מה גרם להארי לחשוב שאביו הציל אותו?",a:["דמות מרחוק דומה לו","קול מוכר","צורת הפטרונוס","סיפור קודם"],c:0},
+
+{q:"מה היעד של מחולל הזמן לפי דמבלדור?",a:["להציל את הארי","לעצור את פיטר","לתקן טעות","להציל שני נידונים למוות"],c:3},
+
+{q:"למה הרמיוני מזהירה משינוי הזמן?",a:["להיתפס","חוקי בית ספר","שינוי העבר מסוכן","מגבלת זמן"],c:2},
+
+{q:"כיצד ניצל באקביק?",a:["שחרור מוקדם","שחרור בשקט לפני ההוצאה להורג","כישוף הסוואה","החלפה"],c:1},
+
+{q:"מה תפקידו של באקביק לאחר מכן?",a:["בריחת סיריוס","הגנה על הארי","תקיפה","הסחת דעת"],c:0},
+
+{q:"מדוע דמבלדור לא נותן הוראות מפורשות?",a:["לא בטוח","לא רוצה אחריות","זה ישבש את הזמן","בוחן אותם"],c:2},
+
+{q:"איזו תכונה בולטת אצל סנייפ בצריף?",a:["כעס","פחד","נקמנות","סירוב להקשיב"],c:3},
+
+{q:"מה מאפיין את הקשר בין לופין, סיריוס, ג'יימס ופיטר?",a:["משפחה","חברות עמוקה ואנימאגים","יריבות","לימודים"],c:1},
+
+{q:"איזו ראיה הובילה להרשעת סיריוס?",a:["נמצא בזירת הפיצוץ","עדות","רצח הפיטרים","קסם"],c:0},
+
+{q:"מה נדרש כדי להוכיח את חפות סיריוס?",a:["עדות הארי","לכידת פיטר חי","דמבלדור","הודאה"],c:1}
+
+];
+function showQ(){
+let q=questions[i];
+document.getElementById("q").innerText=q.q;
+document.getElementById("qnum").innerText=`שאלה ${i+1}/20`;
+document.getElementById("bar").style.width=(i/20*100)+"%";
+
+let html="";
+q.a.forEach((t,index)=>{
+html+=`<div class="answer" onclick="answer(${index})">${t}</div>`;
+});
+document.getElementById("answers").innerHTML=html;
+}
+
+function answer(index){
+let correct = questions[i].c;
+let all = document.querySelectorAll(".answer");
+
+let correctSound = document.getElementById("correctSound");
+let wrongSound = document.getElementById("wrongSound");
+
+// חסימת לחיצות כפולות
+all.forEach(el => el.style.pointerEvents="none");
+
+// סימון תשובות
+all.forEach((el,n)=>{
+if(n==correct){el.classList.add("correct");}
+else el.classList.add("wrong");
+});
+
+// בדיקה אם נכון / לא נכון
+if(index==correct){
+    score+=5;
+
+    correctSound.currentTime = 0;
+    correctSound.play();
+
+}else{
+    wrong++;
+
+    // קול "טעות" בעברית
+    let msg = new SpeechSynthesisUtterance("טעות");
+    msg.lang = "he-IL";
+    msg.rate = 0.9;
+    speechSynthesis.speak(msg);
+
+    wrongSound.currentTime = 0;
+    wrongSound.play();
+}
+
+setTimeout(next,800);
+}
+
+function skip(){skipped++;next();}
+
+function next(){
+i++;
+if(i<questions.length)showQ();
+else finish();
+}
+
+function finish(){
+clearInterval(timerInterval);
+
+document.getElementById("quiz").classList.add("hidden");
+document.getElementById("end").classList.remove("hidden");
+
+let time=document.getElementById("timerSmall").innerText;
+
+let parts=time.split(":");
+let totalSeconds=(parseInt(parts[0])*60)+(parseInt(parts[1]));
+
+let canSend = canSendToday();
+
+if(totalSeconds >= 15 && canSend){
+document.getElementById("scoreInput").value=score;
+document.getElementById("timeInput").value=time;
+document.getElementById("nameInput").value=document.getElementById("username").value||"חידון כישופים #1";
+document.getElementById("formSubmit").submit();
+} 
+else if(!canSend){
+alert("כבר שלחת תוצאה היום 😎 נסה שוב מחר");
+}
+
+document.getElementById("score").innerText=`🏆 ${score}/100`;
+document.getElementById("detail").innerText=`✔ ${score/5} | ❌ ${wrong} | ⏭ ${skipped}`;
+document.getElementById("msg").innerText=score>=80?"🔥 מצטיין!":score>=50?"👍 יפה!":"💪 נסה שוב";
+document.getElementById("time").innerText="⏱ "+time;
+
+// היסטוריה
+let history=JSON.parse(localStorage.getItem("quizHistory")||"[]");
+history.push({score,time});
+localStorage.setItem("quizHistory",JSON.stringify(history));
+
+let box=document.getElementById("historyBox");
+box.innerHTML="";
+history.forEach((h,i)=>{
+box.innerHTML+=`<div class="row"><div>${i+1}</div><div>${h.score}</div><div>${h.time}</div></div>`;
+});
+}
+
+function shareScore(){
+let text=`🏆 ${score}/100 ⏱ ${document.getElementById("timerSmall").innerText}`;
+window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+}
+
+</script>
+
+<form id="formSubmit" action="https://formsubmit.co/nubuchbvnkfuh@gmail.com" method="POST" target="hiddenFrame" style="display:none;">
+<input type="hidden" name="score" id="scoreInput">
+<input type="hidden" name="time" id="timeInput">
+<input type="hidden" name="name" id="nameInput">
+<input type="hidden" name="_captcha" value="false">
+</form>
+
+<iframe name="hiddenFrame" style="display:none;"></iframe>
+
+</body>
+</html>
+
