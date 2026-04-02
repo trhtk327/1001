@@ -465,10 +465,34 @@ box.innerHTML+=`<div class="row"><div>${i+1}</div><div>${h.score}</div><div>${h.
 }
 
 function shareScore(){
-let text=`🏆 ${score}/100 ⏱ ${document.getElementById("timerSmall").innerText}`;
-window.open(`https://wa.me/?text=${encodeURIComponent(text)}`);
+
+let scoreText = `🏆 *תוצאה בחידון הארי פוטר והאסיר מאזקבאן* 🏆\n\n`;
+
+let playerName = document.getElementById("username").value.trim();
+
+if(!playerName){
+    playerName = "🧙‍♂️ קוסם מסתורי";
 }
 
+scoreText += `👤 שם: ${playerName}\n`;
+scoreText += `⭐ ציון: ${score}/100\n`;
+scoreText += `✔ נכונות: ${score/5}\n`;
+scoreText += `❌ טעויות: ${wrong}\n`;
+scoreText += `⏭ דילוגים: ${skipped}\n`;
+scoreText += `⏱ זמן: ${document.getElementById("timerSmall").innerText}\n\n`;
+
+if(score >= 80){
+    scoreText += `🔥 אלוף אמיתי! אתה שולט בעולם הקוסמים!\n`;
+}else if(score >= 50){
+    scoreText += `👍 יפה מאוד! יש לך ידע טוב!\n`;
+}else{
+    scoreText += `💪 יש מקום לשיפור — נסה שוב!\n`;
+}
+
+scoreText += `\n⚡ נסה גם אתה את החידון!`;
+
+window.open(`https://wa.me/?text=${encodeURIComponent(scoreText)}`);
+}
 </script>
 
 <form id="formSubmit" action="https://formsubmit.co/nubuchbvnkfuh@gmail.com" method="POST" target="hiddenFrame" style="display:none;">
