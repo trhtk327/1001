@@ -404,7 +404,7 @@ if(index==correct){
     wrong++;
 
     // קול "טעות" בעברית
-    let msg = new SpeechSynthesisUtterance("טעות");
+    let msg = new SpeechSynthesisUtterance("");
     msg.lang = "he-IL";
     msg.rate = 0.9;
     speechSynthesis.speak(msg);
